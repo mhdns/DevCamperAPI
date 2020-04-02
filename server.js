@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const dotenv = require('dotenv');
 const chalk = require('chalk');
 const bootcamps = require('./routes/bootcamps');
+const errorHandler = require('./middleware/error');
 const connectDB = require('./config/db');
 
 // Colors
@@ -28,6 +29,9 @@ if (process.env.NODE_ENV === 'development') {
 
 // Bootcamp Routes
 app.use('/api/v1/bootcamps', bootcamps);
+
+// Error handler
+app.use(errorHandler);
 
 const server = app.listen(
   process.env.PORT,
