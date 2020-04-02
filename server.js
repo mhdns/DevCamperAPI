@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const express = require('express');
 const morgan = require('morgan');
 const dotenv = require('dotenv');
@@ -27,11 +28,11 @@ app.use('/api/v1/bootcamps', bootcamps);
 
 const server = app.listen(
   process.env.PORT,
-  // eslint-disable-next-line no-console
   console.log(info(`Server running in ${process.env.NODE_ENV} mode on port ${process.env.PORT}`))
 );
 
 // Handle unhandled promise rejections
+// eslint-disable-next-line no-unused-vars
 process.on('unhandledRejection', (err, promise) => {
   console.log(error(`Error: ${err.message}`));
   // CLose server and exit
