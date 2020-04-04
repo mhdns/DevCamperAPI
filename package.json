@@ -10,6 +10,7 @@
   "author": "Muhammad Anas",
   "license": "MIT",
   "dependencies": {
+    "axios": "^0.19.2",
     "chalk": "^3.0.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
