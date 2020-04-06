@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const dotenv = require('dotenv');
 const chalk = require('chalk');
 const bootcamps = require('./routes/bootcamps');
+const courses = require('./routes/courses');
 const errorHandler = require('./middleware/error');
 const connectDB = require('./config/db');
 
@@ -27,8 +28,9 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
-// Bootcamp Routes
+// Mount Router
 app.use('/api/v1/bootcamps', bootcamps);
+app.use('/api/v1/courses', courses);
 
 // Error handler
 app.use(errorHandler);
