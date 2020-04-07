@@ -3,6 +3,8 @@ const express = require('express');
 const morgan = require('morgan');
 const dotenv = require('dotenv');
 const chalk = require('chalk');
+const fileupload = require('express-fileupload');
+const path = require('path');
 const bootcamps = require('./routes/bootcamps');
 const courses = require('./routes/courses');
 const errorHandler = require('./middleware/error');
@@ -22,6 +24,12 @@ const app = express();
 
 // Body Parser
 app.use(express.json());
+
+// File uploading
+app.use(fileupload());
+
+// Set static folder
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Dev logging middleware
 if (process.env.NODE_ENV === 'development') {

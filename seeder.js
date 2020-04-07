@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const fs = require('fs');
 const mongoose = require('mongoose');
 const chalk = require('chalk');
