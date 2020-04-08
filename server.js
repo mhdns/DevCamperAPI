@@ -5,6 +5,7 @@ const dotenv = require('dotenv');
 const chalk = require('chalk');
 const fileupload = require('express-fileupload');
 const path = require('path');
+const cookieParser = require('cookie-parser');
 const bootcamps = require('./routes/bootcamps');
 const courses = require('./routes/courses');
 const auth = require('./routes/auth');
@@ -25,6 +26,9 @@ const app = express();
 
 // Body Parser
 app.use(express.json());
+
+// Cookie parser
+app.use(cookieParser());
 
 // File uploading
 app.use(fileupload());

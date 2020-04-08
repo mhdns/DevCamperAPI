@@ -49,7 +49,8 @@ UserSchema.methods.getSignedJwtToken = function () {
 
 // Match user entered password to encrypted password in db
 UserSchema.methods.matchPassword = function (enteredPassword) {
-  // Returns a promise but there is no need for async function as you are not doing anything after the function
+  // Returns a promise but there is no need for async function as
+  // you are not doing anything after the function
   return bcrypt.compare(enteredPassword, this.password);
 };
 
