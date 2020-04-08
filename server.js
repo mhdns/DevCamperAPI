@@ -7,6 +7,7 @@ const fileupload = require('express-fileupload');
 const path = require('path');
 const bootcamps = require('./routes/bootcamps');
 const courses = require('./routes/courses');
+const auth = require('./routes/auth');
 const errorHandler = require('./middleware/error');
 const connectDB = require('./config/db');
 
@@ -39,6 +40,7 @@ if (process.env.NODE_ENV === 'development') {
 // Mount Router
 app.use('/api/v1/bootcamps', bootcamps);
 app.use('/api/v1/courses', courses);
+app.use('/api/v1/auth', auth);
 
 // Error handler
 app.use(errorHandler);
