@@ -3,7 +3,7 @@ const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
 
 
-// Get token from model, create cookie and send response
+// Helper: Get token from model, create cookie and send response
 const sendTokenResponse = (user, statusCode, res) => {
   // Create token
   const token = user.getSignedJwtToken();
@@ -84,4 +84,22 @@ exports.getMe = asyncHandler(async (req, res, next) => {
     success: true,
     data: user
   });
+});
+
+// @desc      Forgot Password
+// @route     POST /api/v1/auth/forgotpassword
+// @access    Public
+exports.forgotPassword = asyncHandler(async (req, res, next) => {
+  const user = await User.findOne({ email: req.body.email });
+
+  if (!user) {
+    return next(new ErrorResponse('There is no user with the email', 404));
+  }
+
+  // Ger reset token
+  const resetToken = user.getResetPasswordToken();
+
+  await user.save({ validateBeforeSave: false });
+
+  return res.status(200).json({ success: true, data: resetToken });
 });
