@@ -45,14 +45,23 @@ exports.createBootcamp = asyncHandler(async (req, res, next) => {
 // @route     PUT /api/v1/bootcamps/:id
 // @access    Private
 exports.updateBootcamp = asyncHandler(async (req, res, next) => {
-  const bootcamp = await Bootcamp.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-    runValidators: true
-  });
+  // Get the bootcamp
+  let bootcamp = await Bootcamp.findById(req.params.id);
 
   if (!bootcamp) {
     return next(new ErrorResponse(`Bootcamp not found with the id of ${req.params.id}`, 404));
   }
+
+  // Check if request user is the owner of bootcamp
+  if (bootcamp.user.toString() !== req.user.id) {
+    return next(new ErrorResponse(`The user with ID ${req.user.id} is not the owner.`, 401));
+  }
+
+  // Update the bootcamp
+  bootcamp = await Bootcamp.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true
+  });
 
   return res.status(200).json({ success: true, data: bootcamp });
 });
@@ -65,6 +74,11 @@ exports.deleteBootcamp = asyncHandler(async (req, res, next) => {
 
   if (!bootcamp) {
     return next(new ErrorResponse(`Bootcamp not found with the id of ${req.params.id}`, 404));
+  }
+
+  // Check if request user is the owner of bootcamp
+  if (bootcamp.user.toString() !== req.user.id) {
+    return next(new ErrorResponse(`The user with ID ${req.user.id} is not the owner.`, 401));
   }
 
   bootcamp.remove();
@@ -115,6 +129,11 @@ exports.bootcampPhotoUpload = asyncHandler(async (req, res, next) => {
 
   if (!bootcamp) {
     return next(new ErrorResponse(`Bootcamp not found with the id of ${req.params.id}`, 404));
+  }
+
+  // Check if request user is the owner of bootcamp
+  if (bootcamp.user.toString() !== req.user.id) {
+    return next(new ErrorResponse(`The user with ID ${req.user.id} is not the owner.`, 401));
   }
 
   if (!req.files) {
