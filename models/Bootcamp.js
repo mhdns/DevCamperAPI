@@ -1,3 +1,5 @@
+/* eslint-disable func-names */
+/* eslint-disable no-useless-escape */
 const mongoose = require('mongoose');
 const slugify = require('slugify');
 const geocoder = require('../utils/geocoder');

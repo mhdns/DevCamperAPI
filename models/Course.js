@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+/* eslint-disable func-names */
 const mongoose = require('mongoose');
 
 const CourseSchema = new mongoose.Schema({
