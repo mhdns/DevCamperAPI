@@ -20,7 +20,7 @@ const sendTokenResponse = (user, statusCode, res) => {
     options.secure = true;
   }
 
-  res
+  return res
     .status(statusCode)
     .cookie('token', token, options)
     .json({ success: true, token });
@@ -45,7 +45,7 @@ exports.register = asyncHandler(async (req, res, next) => {
   // Create token
   const token = user.getSignedJwtToken();
 
-  res.status(200).json({ success: true, token });
+  return res.status(200).json({ success: true, token });
 });
 
 // @desc      Login user
@@ -82,7 +82,7 @@ exports.login = asyncHandler(async (req, res, next) => {
 // @access    Private
 exports.getMe = asyncHandler(async (req, res, next) => {
   const user = await User.findById(req.user.id);
-  res.status(200).json({
+  return res.status(200).json({
     success: true,
     data: user
   });
@@ -153,5 +153,43 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
   user.resetPasswordExpire = undefined;
   await user.save();
 
-  sendTokenResponse(user, 200, res);
+  return sendTokenResponse(user, 200, res);
+});
+
+// @desc      Update user details
+// @route     PUT /api/v1/auth/updatedetails
+// @access    Private
+exports.updateDetails = asyncHandler(async (req, res, next) => {
+  const fieldsToUpdate = {
+    name: req.body.name,
+    email: req.body.email
+  };
+
+  const user = await User.findByIdAndUpdate(req.user.id, fieldsToUpdate, {
+    new: true,
+    runValidators: true
+  });
+
+  return res.status(200).json({
+    success: true,
+    data: user
+  });
+});
+
+// @desc      Update Password
+// @route     PUT /api/v1/auth/updatepasword
+// @access    Private
+exports.updatePassword = asyncHandler(async (req, res, next) => {
+  const user = await User.findById(req.user.id).select('+password');
+
+  // Check current password
+  if (!(await user.matchPassword(req.body.currentPassword))) {
+    next(new ErrorResponse('Password is Incorrect', 401));
+  }
+
+  user.password = req.body.newPassword;
+
+  await user.save();
+
+  return sendTokenResponse(user, 200, res);
 });
