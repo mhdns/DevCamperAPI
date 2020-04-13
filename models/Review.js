@@ -4,28 +4,18 @@ const ReviewSchema = new mongoose.Schema({
   title: {
     type: String,
     trim: true,
-    required: [true, 'Please add a course title.']
+    required: [true, 'Please add a title for the review.'],
+    maxlength: 100
   },
-  description: {
+  text: {
     type: String,
-    required: [true, 'Please add a description.']
+    required: [true, 'Please add some text.']
   },
-  weeks: {
+  rating: {
     type: Number,
-    required: [true, 'Please enter duration of course.']
-  },
-  tuition: {
-    type: Number,
-    required: [true, 'Please add a tuition fee for course.']
-  },
-  minimumSkill: {
-    type: String,
-    required: [true, 'Please add minimum skill required.'],
-    enum: ['beginner', 'intermediate', 'advanced']
-  },
-  scholarshipAvailable: {
-    type: Boolean,
-    default: false
+    min: 1,
+    max: 10,
+    required: [true, 'Please a rating from 1-10.']
   },
   createdAt: {
     type: Date,
