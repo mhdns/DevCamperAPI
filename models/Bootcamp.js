@@ -44,7 +44,9 @@ const BootcampSchema = new mongoose.Schema({
   averageCost: {
     type: Number
   },
-
+  averageRating: {
+    type: Number
+  },
   location: {
     // GeoJSON Point
     type: {
