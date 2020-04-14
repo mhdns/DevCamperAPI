@@ -6,6 +6,9 @@ const chalk = require('chalk');
 const fileupload = require('express-fileupload');
 const path = require('path');
 const cookieParser = require('cookie-parser');
+const mongoSanitize = require('express-mongo-sanitize');
+const helmet = require('helmet');
+const xss = require('xss-clean');
 const bootcamps = require('./routes/bootcamps');
 const courses = require('./routes/courses');
 const auth = require('./routes/auth');
@@ -31,6 +34,15 @@ app.use(express.json());
 
 // Cookie parser
 app.use(cookieParser());
+
+// Sanitize
+app.use(mongoSanitize());
+
+// Set Security Headers
+app.use(helmet());
+
+// Prevent XSS Attacks
+app.use(xss());
 
 // File uploading
 app.use(fileupload());
